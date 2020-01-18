@@ -4,14 +4,28 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"strings"
 	"github.com/michaelzx/paladin-go/utils"
+	"strings"
 )
+
+type IPage interface {
+	GetPageNum() int32
+	GetPageSize() int32
+}
 
 type PageCommonParams struct {
 	PageNum  int32 `valid:"required~页码不能为空"`
 	PageSize int32 `valid:"required~页数不能为空"`
 }
+
+func (p PageCommonParams) GetPageNum() int32 {
+	return p.PageNum
+}
+
+func (p PageCommonParams) GetPageSize() int32 {
+	return p.PageNum
+}
+
 type PageVO struct {
 	PageNum     int32 // 第几页
 	PageSize    int32 // 每页几条
@@ -22,11 +36,11 @@ type PageVO struct {
 	List        interface{}
 }
 
-func NewPageVO(db *gorm.DB, list interface{}, sqlTpl string, pageNum int32, pageSize int32, params interface{}) (*PageVO, error) {
+func NewPageVO(db *gorm.DB, list interface{}, sqlTpl string, params IPage) (*PageVO, error) {
 	// return &PageVO{PageNum: pageNum, PageSize: pageSize, List: list}
 	p := &PageVO{
-		PageNum:  pageNum,
-		PageSize: pageSize,
+		PageNum:  params.GetPageNum(),
+		PageSize: params.GetPageSize(),
 		List:     list,
 	}
 	err := p.Get(db, sqlTpl, params)
