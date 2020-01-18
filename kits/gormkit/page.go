@@ -23,7 +23,7 @@ func (p PageCommonParams) GetPageNum() int32 {
 }
 
 func (p PageCommonParams) GetPageSize() int32 {
-	return p.PageNum
+	return p.PageSize
 }
 
 type PageVO struct {
