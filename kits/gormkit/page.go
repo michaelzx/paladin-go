@@ -58,6 +58,7 @@ func (p *PageVO) Get(db *gorm.DB, sqlTpl string, params interface{}) error {
 		return err
 	}
 	countSql := fmt.Sprintf(`select count(*) from (%s) as t`, resolver.Sql)
+	countSql = strings.Replace(countSql, "\n", " ", -1)
 	result := db.Raw(countSql, resolver.Values...).Count(&p.Total)
 	if result.Error != nil {
 		return result.Error
