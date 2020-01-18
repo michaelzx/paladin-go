@@ -38,20 +38,6 @@ func ParamToInt(c *gin.Context, paramName string) int {
 	return i
 }
 
-func GetSiteId(c *gin.Context) int64 {
-	i := c.GetInt64("SiteId")
-	if i == 0 {
-		panic(errs.NewBadRequestError("无法获取正确的 SiteId"))
-	}
-	return i
-}
-func GetAdminId(c *gin.Context) int64 {
-	i := c.GetInt64("AdminId")
-	if i == 0 {
-		panic(errs.NewBadRequestError("无法获取正确的 AdminId"))
-	}
-	return i
-}
 func GetPageSize(c *gin.Context) int {
 	size := ParamToInt(c, "PageSize")
 	if size <= 0 {
