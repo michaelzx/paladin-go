@@ -7,7 +7,7 @@ import (
 type Params map[string]interface{}
 
 func RawPlus(db *gorm.DB, sqlTpl string, params interface{}) *gorm.DB {
-	resolver := new(sqlTplResolver)
+	resolver := new(SqlTplResolver)
 	err := resolver.Resolve(sqlTpl, params)
 	if err != nil {
 		clone := db.New()

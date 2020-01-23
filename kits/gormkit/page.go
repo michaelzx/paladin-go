@@ -51,7 +51,7 @@ func NewPageVO(db *gorm.DB, list interface{}, sqlTpl string, params IPage) (*Pag
 }
 
 func (p *PageVO) Get(db *gorm.DB, sqlTpl string, params interface{}) error {
-	resolver := new(sqlTplResolver)
+	resolver := new(SqlTplResolver)
 	// 先用text/template对sql解析一波
 	err := resolver.Resolve(sqlTpl, params)
 	if err != nil {

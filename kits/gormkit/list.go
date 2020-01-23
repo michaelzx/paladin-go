@@ -14,7 +14,7 @@ func NewListVO(db *gorm.DB, list interface{}, sqlTpl string, params interface{})
 	if !utils.IsPtr(list) {
 		return errors.New("字段 List 必须是指针类型")
 	}
-	resolver := new(sqlTplResolver)
+	resolver := new(SqlTplResolver)
 	err := resolver.Resolve(sqlTpl, params)
 	if err != nil {
 		return err

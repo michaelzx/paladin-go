@@ -10,12 +10,12 @@ import (
 	"github.com/michaelzx/paladin-go/utils"
 )
 
-type sqlTplResolver struct {
+type SqlTplResolver struct {
 	Sql    string
 	Values []interface{}
 }
 
-func (s *sqlTplResolver) Resolve(tplStr string, queryParams interface{}) error {
+func (s *SqlTplResolver) Resolve(tplStr string, queryParams interface{}) error {
 	if !utils.IsPtr(queryParams) {
 		return errors.New("params 必须是指针类型")
 	}
