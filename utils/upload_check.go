@@ -71,7 +71,7 @@ const (
 
 func init() {
 	fileTypeMap.Store("30820a9a02010330820a", "p12")  // 微信支付p12证书
-	fileTypeMap.Store("ffd8ffe", "jpg")               // JPEG (jpg) FF D8 FF E0/FF D8 FF E1/FF D8 FF E8
+	fileTypeMap.Store("ffd8ff", "jpg")                // JPEG (jpg) FF D8 FF E0/FF D8 FF E1/FF D8 FF E8
 	fileTypeMap.Store("89504e470d0a1a0a0000", "png")  // PNG (png)
 	fileTypeMap.Store("47494638", "gif")              // GIF (gif)
 	fileTypeMap.Store("49492a00227105008037", "tif")  // TIFF (tif)
