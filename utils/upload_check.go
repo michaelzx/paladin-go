@@ -8,6 +8,8 @@ import (
 	"sync"
 )
 
+// 文件签名参考： https://www.garykessler.net/library/file_sigs.html
+
 var fileTypeMap sync.Map
 
 type FileType string
@@ -94,7 +96,6 @@ func init() {
 	fileTypeMap.Store("255044462d312e350d0a", "pdf")  // Adobe Acrobat (pdf)
 	fileTypeMap.Store("2e524d46000000120001", "rmvb") // rmvb/rm相同
 	fileTypeMap.Store("464c5601050000000900", "flv")  // flv与f4v相同
-	fileTypeMap.Store("00000020667479706d70", "mp4")
 	fileTypeMap.Store("49443303000000002176", "mp3")
 	fileTypeMap.Store("000001ba210001000180", "mpg") //
 	fileTypeMap.Store("3026b2758e66cf11a6d9", "wmv") // wmv与asf相同
@@ -149,6 +150,13 @@ func bytesToHexString(src []byte) string {
 
 // 用文件前面几个字节来判断
 // fSrc: 文件字节流（就用前面几个字节）
+// f, err := file.Open()
+// if err != nil {
+// return err
+// }
+// fSrc, err := ioutil.ReadAll(f)
+// _ = f.Close()
+// ft := utils.GetFileType(fSrc[:10])
 func GetFileType(fSrc []byte) string {
 	var fileType string
 	fileCode := bytesToHexString(fSrc)
@@ -164,4 +172,18 @@ func GetFileType(fSrc []byte) string {
 		return true
 	})
 	return fileType
+}
+
+const mp4Sign1 = "6674797069736f6d"
+const mp4Sign2 = "667479706d703432"
+func IsMp4(fSrc []byte) bool {
+	// 需要去掉前面4个字节
+	fileCode := bytesToHexString(fSrc[4:])
+	if strings.HasPrefix(fileCode,strings.ToLower(mp4Sign1)){
+		return true
+	}
+	if strings.HasPrefix(fileCode,strings.ToLower(mp4Sign2)){
+		return true
+	}
+	return false
 }

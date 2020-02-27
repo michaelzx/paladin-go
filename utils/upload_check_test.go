@@ -14,6 +14,16 @@ func TestGetFileType(t *testing.T) {
 	getHex(t, "/Users/michael/workspace/personal/201911=到店易/图片类型识别问题/gps.jpeg")
 	getHex(t, "/Users/michael/workspace/personal/201911=到店易/图片类型识别问题/bt3.gif")
 }
+func TestGetVideoType(t *testing.T) {
+	getVideoHex(t, "/Users/michael/Downloads/QQ20200222-202435-HD.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/QQ20200222-202520-HD.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/2d2d68d0b5b8c345d5df6bd6cf201860.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/6e202bc9af8d7efd632aa1a9e82081ac.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/402f83d951ed2f04a5b4d1ae709b59cc.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/e54c84018ebafa4f4a516f79eb20237a.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/e6816604cc64444c2a276bac30bbc243.mp4")
+	getVideoHex(t, "/Users/michael/Downloads/fa9871af5a16c48b754f5418d459b5b1.mp4")
+}
 func getHex(t *testing.T, fp string) {
 	// f, err := os.Open("C:\\Users\\Administrator\\Desktop\\api.html")
 	f, err := os.Open(fp)
@@ -25,4 +35,13 @@ func getHex(t *testing.T, fp string) {
 	fileCode := bytesToHexString(fSrc[:10])
 	t.Log(fileCode)
 	t.Log(GetFileType(fSrc[:10]))
+}
+func getVideoHex(t *testing.T, fp string) {
+	f, err := os.Open(fp)
+	if err != nil {
+		t.Logf("open error: %v", err)
+	}
+
+	fSrc, err := ioutil.ReadAll(f)
+	t.Log(GetVideoType(fSrc[:20]))
 }
