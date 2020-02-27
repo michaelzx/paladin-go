@@ -176,7 +176,7 @@ func GetFileType(fSrc []byte) string {
 
 const mp4Sign1 = "6674797069736f6d"
 const mp4Sign2 = "667479706d703432"
-func IsMp4(fSrc []byte) bool {
+func FileIsMp4(fSrc []byte) bool {
 	// 需要去掉前面4个字节
 	fileCode := bytesToHexString(fSrc[4:])
 	if strings.HasPrefix(fileCode,strings.ToLower(mp4Sign1)){

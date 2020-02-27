@@ -17,12 +17,6 @@ func TestGetFileType(t *testing.T) {
 func TestGetVideoType(t *testing.T) {
 	getVideoHex(t, "/Users/michael/Downloads/QQ20200222-202435-HD.mp4")
 	getVideoHex(t, "/Users/michael/Downloads/QQ20200222-202520-HD.mp4")
-	getVideoHex(t, "/Users/michael/Downloads/2d2d68d0b5b8c345d5df6bd6cf201860.mp4")
-	getVideoHex(t, "/Users/michael/Downloads/6e202bc9af8d7efd632aa1a9e82081ac.mp4")
-	getVideoHex(t, "/Users/michael/Downloads/402f83d951ed2f04a5b4d1ae709b59cc.mp4")
-	getVideoHex(t, "/Users/michael/Downloads/e54c84018ebafa4f4a516f79eb20237a.mp4")
-	getVideoHex(t, "/Users/michael/Downloads/e6816604cc64444c2a276bac30bbc243.mp4")
-	getVideoHex(t, "/Users/michael/Downloads/fa9871af5a16c48b754f5418d459b5b1.mp4")
 }
 func getHex(t *testing.T, fp string) {
 	// f, err := os.Open("C:\\Users\\Administrator\\Desktop\\api.html")
@@ -43,5 +37,5 @@ func getVideoHex(t *testing.T, fp string) {
 	}
 
 	fSrc, err := ioutil.ReadAll(f)
-	t.Log(GetVideoType(fSrc[:20]))
+	t.Log(FileIsMp4(fSrc[:20]))
 }
