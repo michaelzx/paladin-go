@@ -176,13 +176,36 @@ func GetFileType(fSrc []byte) string {
 
 const mp4Sign1 = "6674797069736f6d"
 const mp4Sign2 = "667479706d703432"
+
 func FileIsMp4(fSrc []byte) bool {
 	// 需要去掉前面4个字节
 	fileCode := bytesToHexString(fSrc[4:])
-	if strings.HasPrefix(fileCode,strings.ToLower(mp4Sign1)){
+	if strings.HasPrefix(fileCode, strings.ToLower(mp4Sign1)) {
 		return true
 	}
-	if strings.HasPrefix(fileCode,strings.ToLower(mp4Sign2)){
+	if strings.HasPrefix(fileCode, strings.ToLower(mp4Sign2)) {
+		return true
+	}
+	return false
+}
+
+const mp3Sign1 = "494433"
+
+func FileIsMp3(fSrc []byte) bool {
+	fileCode := bytesToHexString(fSrc[:3])
+	if strings.HasPrefix(fileCode, strings.ToLower(mp3Sign1)) {
+		return true
+	}
+	return false
+}
+
+const wavSign1 = "52494646"
+const wavSign2 = "57415645666d7420"
+
+func FileIsWav(fSrc []byte) bool {
+	fileCode1 := bytesToHexString(fSrc[:4])
+	fileCode2 := bytesToHexString(fSrc[8:16])
+	if strings.ToLower(fileCode1) == wavSign1 && strings.ToLower(fileCode2) == wavSign2 {
 		return true
 	}
 	return false
