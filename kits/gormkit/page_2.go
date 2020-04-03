@@ -11,21 +11,28 @@ import (
 	"time"
 )
 
-func NewPageVO2(db *gorm.DB, mapList interface{}, resolver *SqlTplResolver, pageNum, pageSize int32) (*PageVO, error) {
+type KeyFunc func(key string) string
+
+func ToCamel() KeyFunc {
+	return func(key string) string {
+		return strcase.ToCamel(key)
+	}
+}
+func NewPageVO2(db *gorm.DB, mapList interface{}, resolver *SqlTplResolver, pageNum, pageSize int32, keyFunc KeyFunc) (*PageVO, error) {
 	// return &PageVO{PageNum: pageNum, PageSize: pageSize, List: mapList}
 	p := &PageVO{
 		PageNum:  pageNum,
 		PageSize: pageSize,
 		List:     mapList,
 	}
-	err := p.Get4Map(db, resolver)
+	err := p.Get4Map(db, resolver, keyFunc)
 	if err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (p *PageVO) Get4Map(db *gorm.DB, resolver *SqlTplResolver) error {
+func (p *PageVO) Get4Map(db *gorm.DB, resolver *SqlTplResolver, keyFunc KeyFunc) error {
 	sqlBlocks := strings.Split(resolver.Sql, "from")
 	countSql := "select count(1) from" + sqlBlocks[len(sqlBlocks)-1]
 	countSql = strings.Replace(countSql, "\n", " ", -1)
@@ -88,7 +95,7 @@ func (p *PageVO) Get4Map(db *gorm.DB, resolver *SqlTplResolver) error {
 			panic(err)
 		}
 		row := make(map[string]interface{})
-		fillMapRow(row, valMap, columns)
+		fillMapRow(row, valMap, columns, keyFunc)
 		list = append(list, row)
 	}
 	p.List = list
@@ -111,12 +118,14 @@ func createBlankMapRow(length int) []interface{} {
 	}
 	return result
 }
-func fillMapRow(row map[string]interface{}, valMap []interface{}, columns []string) {
+func fillMapRow(row map[string]interface{}, valMap []interface{}, columns []string, keyFunc KeyFunc) {
 	for i := 0; i < len(columns); i++ {
 		key := columns[i]
 		val := *(valMap[i]).(*interface{})
-
-		rowKey := strcase.ToCamel(key)
+		rowKey := key
+		if keyFunc != nil {
+			rowKey = keyFunc(key)
+		}
 		if val == nil {
 			row[rowKey] = nil
 			continue
