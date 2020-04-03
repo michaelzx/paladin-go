@@ -11,29 +11,22 @@ import (
 	"time"
 )
 
-func PageVO4Map(db *gorm.DB, mapList interface{}, sqlTpl string, params IPage) (*PageVO, error) {
+func NewPageVO2(db *gorm.DB, mapList interface{}, resolver *SqlTplResolver, pageNum, pageSize int32) (*PageVO, error) {
 	// return &PageVO{PageNum: pageNum, PageSize: pageSize, List: mapList}
 	p := &PageVO{
-		PageNum:  params.GetPageNum(),
-		PageSize: params.GetPageSize(),
+		PageNum:  pageNum,
+		PageSize: pageSize,
 		List:     mapList,
 	}
-	err := p.Get4Map(db, sqlTpl, params)
+	err := p.Get4Map(db, resolver)
 	if err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (p *PageVO) Get4Map(db *gorm.DB, sqlTpl string, params interface{}) error {
-
-	resolver := new(SqlTplResolver)
-	// 先用text/template对sql解析一波
-	err := resolver.Resolve(sqlTpl, params)
-	if err != nil {
-		return err
-	}
-	sqlBlocks := strings.Split(sqlTpl, "from")
+func (p *PageVO) Get4Map(db *gorm.DB, resolver *SqlTplResolver) error {
+	sqlBlocks := strings.Split(resolver.Sql, "from")
 	countSql := "select count(1) from" + sqlBlocks[len(sqlBlocks)-1]
 	countSql = strings.Replace(countSql, "\n", " ", -1)
 	result := db.Raw(countSql, resolver.Values...).Count(&p.Total)
