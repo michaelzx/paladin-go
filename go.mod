@@ -13,4 +13,5 @@ require (
 	github.com/leodido/go-urn v1.1.0
 	go.uber.org/zap v1.13.0
 	gopkg.in/go-playground/assert.v1 v1.2.1
+	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
 )
