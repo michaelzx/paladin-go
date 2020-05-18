@@ -37,6 +37,9 @@ func (t Time) Value() (driver.Value, error) {
 func (t Time) Format(layout string) string {
 	return time.Time(t).Format(timeFormat)
 }
+func (t Time) StdFormat(layout string) string {
+	return time.Time(t).Format(layout)
+}
 
 func (t Time) MarshalJSON() ([]byte, error) {
 	return json.Marshal(time.Time(t).Format(timeFormat))
