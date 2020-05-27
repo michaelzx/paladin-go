@@ -54,11 +54,13 @@ func getZapConfig(devMode bool, logPrefix string) zap.Config {
 	var loggingLevel zapcore.Level
 	var OutputPaths []string
 	var ErrorOutputPaths []string
+	var levelEncoder zapcore.LevelEncoder
 	if devMode {
 		// 开发模式
 		loggingLevel = zap.DebugLevel
 		OutputPaths = []string{"stdout"}
 		ErrorOutputPaths = []string{"stderr"}
+		levelEncoder = zapcore.CapitalColorLevelEncoder
 	} else {
 		// 生产模式
 		// TODO 对日志进行分割
@@ -79,6 +81,7 @@ func getZapConfig(devMode bool, logPrefix string) zap.Config {
 			OutputPaths = []string{"stdout"}
 			ErrorOutputPaths = []string{"stderr"}
 		}
+		levelEncoder = zapcore.CapitalLevelEncoder
 	}
 	return zap.Config{
 		Level:       zap.NewAtomicLevelAt(loggingLevel),
@@ -93,7 +96,7 @@ func getZapConfig(devMode bool, logPrefix string) zap.Config {
 			MessageKey:     "msg",
 			StacktraceKey:  "stacktrace",
 			LineEnding:     zapcore.DefaultLineEnding,
-			EncodeLevel:    zapcore.CapitalColorLevelEncoder,
+			EncodeLevel:    levelEncoder,
 			EncodeTime:     zapcore.ISO8601TimeEncoder,
 			EncodeDuration: zapcore.NanosDurationEncoder,
 			EncodeCaller:   customCallerEncoder,
