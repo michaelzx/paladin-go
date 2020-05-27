@@ -1,10 +1,10 @@
 package examples
 
 import (
-	"os"
-	"testing"
 	"github.com/michaelzx/paladin-go/logger"
 	"github.com/michaelzx/paladin-go/logger/stdlog"
+	"os"
+	"testing"
 )
 
 type Foo struct {
@@ -27,6 +27,9 @@ func TestStdLog(t *testing.T) {
 }
 
 func TestZapLog(t *testing.T) {
-	logger.UseZapLog(true, "")
+	logger.UseZapLog(false, "cirs-apciss")
 	logger.Debug("Debug", foo)
+	logger.Info("Info", foo)
+	logger.Warn("Warn", foo)
+	logger.Error("Error", foo)
 }

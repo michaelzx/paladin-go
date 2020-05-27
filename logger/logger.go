@@ -27,6 +27,6 @@ func init() {
 func UseStdLog(out io.Writer, level int, color bool) {
 	defaultLogger = stdlog.NewLogger(out, level, color)
 }
-func UseZapLog(dev bool, filePath string) {
-	defaultLogger = zaplog.NewLogger(dev, filePath)
+func UseZapLog(dev bool, logPrefix string) {
+	defaultLogger = zaplog.NewLogger(dev, logPrefix)
 }

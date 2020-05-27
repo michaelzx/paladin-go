@@ -3,6 +3,10 @@ package zaplog
 import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 var (
@@ -29,8 +33,24 @@ func GetZap() *zap.Logger {
 // 		zapLogger.Sync()
 // 	}()
 // }
-
-func getZapConfig(devMode bool, logFilePath string) zap.Config {
+func dirExists(path string) bool {
+	_, err := os.Stat(path) // os.Stat获取文件信息
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		return false
+	}
+	return true
+}
+func appRunningPath() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		return ""
+	}
+	return strings.Replace(dir, "\\", "/", -1)
+}
+func getZapConfig(devMode bool, logPrefix string) zap.Config {
 	var loggingLevel zapcore.Level
 	var OutputPaths []string
 	var ErrorOutputPaths []string
@@ -43,9 +63,18 @@ func getZapConfig(devMode bool, logFilePath string) zap.Config {
 		// 生产模式
 		// TODO 对日志进行分割
 		loggingLevel = zap.InfoLevel
-		if logFilePath != "" {
-			OutputPaths = []string{"stdout"}
-			ErrorOutputPaths = []string{"stderr"}
+		if logPrefix != "" {
+			logDirPath := filepath.Join(appRunningPath(), "log")
+			log.Println("===========")
+			log.Println(logDirPath)
+			log.Println("===========")
+			if !dirExists(logDirPath) {
+				if err := os.Mkdir(logDirPath, os.ModePerm); err != nil {
+					log.Fatal("无法创建log目录", err.Error())
+				}
+			}
+			OutputPaths = []string{"stdout", filepath.Join(logDirPath, logPrefix+".log")}
+			ErrorOutputPaths = []string{"stderr", filepath.Join(logDirPath, logPrefix+".err.log")}
 		} else {
 			OutputPaths = []string{"stdout"}
 			ErrorOutputPaths = []string{"stderr"}

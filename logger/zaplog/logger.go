@@ -9,8 +9,8 @@ type Logger struct {
 	logger *zap.Logger
 }
 
-func NewLogger(dev bool, filePath string) *Logger {
-	zapCfg := getZapConfig(dev, filePath)
+func NewLogger(dev bool, logPrefix string) *Logger {
+	zapCfg := getZapConfig(dev, logPrefix)
 	// 因为我们做了一层包装，所以需要跳过一层caller
 	// 否则，日志的caller位置，始终显示的是当前logger包中的位置
 	callerOption := zap.AddCallerSkip(2)
