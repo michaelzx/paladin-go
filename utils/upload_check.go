@@ -93,7 +93,7 @@ func init() {
 	fileTypeMap.Store("d0cf11e0a1b11ae10000", "vsd")  // Visio 绘图
 	fileTypeMap.Store("5374616E64617264204A", "mdb")  // MS Access (mdb)
 	fileTypeMap.Store("252150532D41646F6265", "ps")
-	fileTypeMap.Store("255044462d312e350d0a", "pdf")  // Adobe Acrobat (pdf)
+	fileTypeMap.Store("255044462d312e3", "pdf")       // Adobe Acrobat (pdf)
 	fileTypeMap.Store("2e524d46000000120001", "rmvb") // rmvb/rm相同
 	fileTypeMap.Store("464c5601050000000900", "flv")  // flv与f4v相同
 	fileTypeMap.Store("49443303000000002176", "mp3")
